@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>怪奇物语性格测试</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(180deg, #0a0a0a 0%, #1a0a1a 50%, #0a0a1a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            position: relative;
+            padding: 20px;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 0, 100, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(0, 200, 255, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(100, 0, 200, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(255, 0, 100, 0.6);
+            border-radius: 50%;
+            animation: float 15s infinite;
+            box-shadow: 0 0 10px rgba(255, 0, 100, 0.8);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 30px;
+            width: 100%;
+            max-width: 750px;
+            position: relative;
+        }
+
+        .start-screen-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .stranger-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .stranger-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            background: linear-gradient(135deg, rgba(255, 0, 100, 0.3), rgba(100, 0, 200, 0.3));
+            border: 2px solid rgba(255, 0, 100, 0.5);
+            animation: iconPulse 2s ease-in-out infinite;
+            box-shadow: 0 0 20px rgba(255, 0, 100, 0.4);
+        }
+
+        .stranger-icon:nth-child(1) { animation-delay: 0s; }
+        .stranger-icon:nth-child(2) { animation-delay: 0.4s; }
+        .stranger-icon:nth-child(3) { animation-delay: 0.8s; }
+        .stranger-icon:nth-child(4) { animation-delay: 1.2s; }
+        .stranger-icon:nth-child(5) { animation-delay: 1.6s; }
+
+        @keyframes iconPulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(255, 0, 100, 0.4);
+            }
+            50% {
+                transform: scale(1.1);
+                box-shadow: 0 0 30px rgba(255, 0, 100, 0.6);
+            }
+        }
+
+        .title {
+            font-size: 2.8rem;
+            background: linear-gradient(135deg, #ff0066 0%, #00c8ff 50%, #ff0066 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+            position: relative;
+            filter: drop-shadow(0 0 20px rgba(255, 0, 100, 0.5));
+            animation: titleFlicker 4s ease-in-out infinite;
+            text-transform: uppercase;
+        }
+        
+        .title::after {
+            content: '怪奇物语性格测试';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(135deg, #ff0066 0%, #00c8ff 50%, #ff0066 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: blur(20px);
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        @keyframes titleFlicker {
+            0%, 100% {
+                filter: drop-shadow(0 0 20px rgba(255, 0, 100, 0.5));
+            }
+            50% {
+                filter: drop-shadow(0 0 40px rgba(255, 0, 100, 0.8)) drop-shadow(0 0 60px rgba(0, 200, 255, 0.4));
+            }
+        }
+
+        .subtitle-container {
+            margin-bottom: 40px;
+        }
+
+        .subtitle {
+            font-size: 1.15rem;
+            color: #ff6699;
+            margin-bottom: 8px;
+            opacity: 0.95;
+            text-shadow: 0 0 10px rgba(255, 0, 100, 0.5);
+        }
+
+        .subtitle-detail {
+            font-size: 0.95rem;
+            color: rgba(0, 200, 255, 0.8);
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #ff0066 0%, #6600cc 100%);
+            border: 2px solid rgba(255, 0, 100, 0.6);
+            padding: 16px 55px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(255, 0, 100, 0.5),
+                        inset 0 1px 3px rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .start-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .start-btn:hover::before {
+            left: 100%;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 0 50px rgba(255, 0, 100, 0.7),
+                        inset 0 1px 3px rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 0, 100, 0.9);
+        }
+
+        .start-btn:active {
+            transform: translateY(-2px) scale(1.01);
+        }
+
+        .start-screen-footer {
+            margin-top: 50px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 0, 100, 0.3);
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+            color: rgba(255, 0, 100, 0.9);
+            margin: 0;
+            animation: textGlow 2s ease-in-out infinite;
+            text-shadow: 0 0 10px rgba(255, 0, 100, 0.5);
+        }
+
+        @keyframes textGlow {
+            0%, 100% {
+                opacity: 0.7;
+                text-shadow: 0 0 10px rgba(255, 0, 100, 0.5);
+            }
+            50% {
+                opacity: 1;
+                text-shadow: 0 0 20px rgba(255, 0, 100, 0.8);
+            }
+        }
+
+        .quiz-container {
+            display: none;
+            background: linear-gradient(135deg, rgba(255, 0, 100, 0.08) 0%, rgba(100, 0, 200, 0.05) 100%);
+            border-radius: 12px;
+            padding: 35px 30px;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 0, 100, 0.3);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(255, 0, 100, 0.2), 0 0 60px rgba(100, 0, 200, 0.1);
+        }
+
+        .quiz-header {
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff0066, #00c8ff, #ff0066);
+            background-size: 200% 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+            animation: shimmer 2s linear infinite;
+            box-shadow: 0 0 10px rgba(255, 0, 100, 0.6);
+        }
+        
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        .question-number {
+            background: linear-gradient(135deg, #ff0066 0%, #00c8ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .encouragement-text {
+            color: rgba(0, 200, 255, 0.9);
+            font-size: 0.85rem;
+            font-style: italic;
+            margin-bottom: 12px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .question-text {
+            color: #e8eef5;
+            font-size: 1.3rem;
+            margin-bottom: 35px;
+            line-height: 1.7;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 35px;
+        }
+
+        .option {
+            background: linear-gradient(135deg, rgba(255, 0, 100, 0.1) 0%, rgba(100, 0, 200, 0.05) 100%);
+            border: 2px solid rgba(255, 0, 100, 0.25);
+            padding: 16px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            color: #d4dce8;
+            font-size: 0.98rem;
+            min-height: 58px;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 100%;
+            position: relative;
+            overflow: visible;
+        }
+
+        .option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 0, 100, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .option:hover {
+            background: linear-gradient(135deg, rgba(255, 0, 100, 0.2) 0%, rgba(255, 0, 100, 0.1) 100%);
+            border-color: rgba(255, 0, 100, 0.6);
+            transform: translateX(4px);
+            box-shadow: 0 0 20px rgba(255, 0, 100, 0.2);
+        }
+
+        .option:hover::before {
+            left: 100%;
+        }
+
+        .option.selected {
+            background: linear-gradient(135deg, rgba(255, 0, 100, 0.3) 0%, rgba(255, 0, 100, 0.15) 100%);
+            border-color: #ff0066;
+            box-shadow: 0 0 20px rgba(255, 0, 100, 0.3), inset 0 0 10px rgba(255, 0, 100, 0.1);
+        }
+
+        .option-letter {
+            display: inline-block;
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg, #ff0066, #6600cc);
+            color: #fff;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 34px;
+            font-weight: bold;
+            margin-right: 14px;
+            flex-shrink: 0;
+            box-shadow: 0 0 15px rgba(255, 0, 100, 0.5);
+            border: 1px solid rgba(255, 0, 100, 0.4);
+        }
+
+        .option-feedback {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #ff0066, #6600cc);
+            color: #fff;
+            padding: 7px 14px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            z-index: 10;
+            animation: feedbackSlide 0.4s ease;
+            box-shadow: 0 0 15px rgba(255, 0, 100, 0.5);
+            white-space: nowrap;
+        }
+
+        @keyframes feedbackSlide {
+            0% {
+                opacity: 0;
+                transform: translateY(-50%) translateX(15px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(-50%) translateX(0);
+            }
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, rgba(255, 0, 100, 0.15) 0%, rgba(100, 0, 200, 0.1) 100%);
+            border: 2px solid rgba(255, 0, 100, 0.4);
+            padding: 12px 35px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #ff0066;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 0, 100, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, rgba(255, 0, 100, 0.25) 0%, rgba(255, 0, 100, 0.15) 100%);
+            border-color: #ff0066;
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(255, 0, 100, 0.3);
+        }
+
+        .nav-btn:hover:not(:disabled)::before {
+            left: 100%;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .nav-btn.primary {
+            background: linear-gradient(135deg, #ff0066, #6600cc);
+            border-color: transparent;
+            color: #fff;
+            box-shadow: 0 0 20px rgba(255, 0, 100, 0.4);
+        }
+
+        .nav-btn.primary:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(255, 0, 100, 0.5);
+        }
+
+        .fun-tip {
+            color: rgba(0, 200, 255, 0.7);
+            font-size: 0.8rem;
+            text-align: center;
+            margin-top: 18px;
+            padding: 10px;
+            background: rgba(255, 0, 100, 0.08);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 0, 100, 0.2);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-container {
+            display: none;
+            background: linear-gradient(135deg, rgba(255, 0, 100, 0.1) 0%, rgba(100, 0, 200, 0.05) 100%);
+            border-radius: 12px;
+            padding: 45px 35px;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 0, 100, 0.35);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(255, 0, 100, 0.2), 0 0 80px rgba(100, 0, 200, 0.1);
+        }
+
+        .result-type {
+            font-size: 1.4rem;
+            background: linear-gradient(135deg, #ff0066 0%, #00c8ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+            font-weight: bold;
+            position: relative;
+            z-index: 1;
+        }
+
+        .result-character {
+            font-size: 3.2rem;
+            background: linear-gradient(135deg, #fff 0%, #ff0066 50%, #00c8ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 25px;
+            font-weight: bold;
+            position: relative;
+            z-index: 1;
+            filter: drop-shadow(0 0 20px rgba(255, 0, 100, 0.5));
+            animation: characterPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes characterPulse {
+            0%, 100% {
+                filter: drop-shadow(0 0 20px rgba(255, 0, 100, 0.5));
+            }
+            50% {
+                filter: drop-shadow(0 0 40px rgba(255, 0, 100, 0.7));
+            }
+        }
+
+        .personality-analysis {
+            background: linear-gradient(135deg, rgba(255, 0, 100, 0.12) 0%, rgba(100, 0, 200, 0.06) 100%);
+            border: 2px solid rgba(255, 0, 100, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            text-align: left;
+            line-height: 1.8;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(255, 0, 100, 0.15);
+        }
+
+        .personality-analysis::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff0066, transparent);
+        }
+
+        .personality-analysis-title {
+            background: linear-gradient(135deg, #ff0066 0%, #00c8ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .personality-analysis-text {
+            color: #d4dce8;
+            font-size: 1.05rem;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+        }
+
+        .character-intro {
+            background: linear-gradient(135deg, rgba(255, 0, 100, 0.08) 0%, rgba(100, 0, 200, 0.04) 100%);
+            border: 2px solid rgba(255, 0, 100, 0.25);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 35px;
+            text-align: left;
+            line-height: 1.8;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .character-intro::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 0, 100, 0.6), transparent);
+        }
+
+        .character-intro-title {
+            background: linear-gradient(135deg, #ff0066 0%, #00c8ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .character-intro-text {
+            color: #d4dce8;
+            font-size: 1.05rem;
+        }
+
+        .restart-btn {
+            background: linear-gradient(135deg, #ff0066, #6600cc);
+            border: 2px solid rgba(255, 0, 100, 0.5);
+            padding: 14px 45px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(255, 0, 100, 0.5),
+                        inset 0 1px 3px rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            letter-spacing: 2px;
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 0 50px rgba(255, 0, 100, 0.6),
+                        inset 0 1px 3px rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 0, 100, 0.8);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 18px;
+            }
+
+            .title {
+                font-size: 2rem;
+            }
+
+            .quiz-container, .result-container {
+                padding: 22px 18px;
+            }
+
+            .question-text {
+                font-size: 1.15rem;
+                margin-bottom: 28px;
+            }
+
+            .option {
+                padding: 14px 16px;
+                font-size: 0.92rem;
+            }
+
+            .nav-btn {
+                padding: 11px 22px;
+                font-size: 0.9rem;
+            }
+
+            .result-type {
+                font-size: 1.15rem;
+            }
+
+            .result-character {
+                font-size: 2.2rem;
+            }
+
+            .personality-analysis, .character-intro {
+                padding: 18px;
+            }
+
+            .personality-analysis-title, .character-intro-title {
+                font-size: 1.05rem;
+            }
+
+            .personality-analysis-text, .character-intro-text {
+                font-size: 0.98rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 1.7rem;
+                letter-spacing: 2px;
+            }
+
+            .subtitle {
+                font-size: 0.98rem;
+            }
+
+            .subtitle-detail {
+                font-size: 0.88rem;
+            }
+
+            .stranger-icons {
+                gap: 10px;
+                margin-bottom: 18px;
+            }
+
+            .stranger-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
+
+            .start-btn {
+                padding: 13px 35px;
+                font-size: 1.05rem;
+            }
+
+            .start-screen-footer {
+                margin-top: 35px;
+                padding-top: 18px;
+            }
+
+            .footer-text {
+                font-size: 0.82rem;
+            }
+
+            .result-character {
+                font-size: 1.9rem;
+            }
+
+            .option {
+                padding: 13px 15px;
+                font-size: 0.9rem;
+            }
+
+            .option-letter {
+                width: 30px;
+                height: 30px;
+                line-height: 30px;
+                margin-right: 12px;
+            }
+
+            .encouragement-text {
+                font-size: 0.78rem;
+            }
+
+            .fun-tip {
+                font-size: 0.72rem;
+                padding: 8px;
+            }
+
+            .option-feedback {
+                font-size: 0.72rem;
+                padding: 5px 10px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <div id="start-screen">
+            <div class="start-screen-content">
+                <div class="stranger-icons">
+                    <div class="stranger-icon">⚡</div>
+                    <div class="stranger-icon">🔮</div>
+                    <div class="stranger-icon">🔦</div>
+                    <div class="stranger-icon">🎮</div>
+                    <div class="stranger-icon">🌐</div>
+                </div>
+                <h1 class="title">怪奇物语性格测试</h1>
+                <div class="subtitle-container">
+                    <p class="subtitle">探索你与霍金斯小镇的哪个角色最相似</p>
+                    <p class="subtitle-detail">穿越逆世界，发现你的隐藏特质</p>
+                </div>
+                <button class="start-btn" onclick="startSurvey()">开始测试</button>
+                <div class="start-screen-footer">
+                    <p class="footer-text">⚡ 逆世界在召唤你...</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="quiz-screen" class="quiz-container">
+            <div class="quiz-header">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="question-number" id="question-number"></div>
+                <div class="encouragement-text" id="encouragement-text"></div>
+            </div>
+            <div class="question-text" id="question-text"></div>
+            <div class="options" id="options"></div>
+            <div class="nav-buttons">
+                <button class="nav-btn" id="prev-btn" onclick="prevQuestion()">上一题</button>
+                <button class="nav-btn primary" id="next-btn" onclick="nextQuestion()">下一题</button>
+            </div>
+            <div class="fun-tip" id="fun-tip"></div>
+        </div>
+
+        <div id="result-screen" class="result-container">
+            <div class="result-type" id="result-type"></div>
+            <div class="result-character" id="result-character"></div>
+            <div class="personality-analysis" id="personality-analysis"></div>
+            <div class="character-intro" id="character-intro"></div>
+            <button class="restart-btn" onclick="restartSurvey()">重新测试</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                text: "当你面对一个未知的危险时，你的第一反应是？",
+                options: [
+                    "冷静分析，寻找解决方案",
+                    "勇敢面对，保护他人",
+                    "寻求帮助，团队合作",
+                    "保持警惕，观察情况"
+                ]
+            },
+            {
+                text: "你更相信什么力量？",
+                options: [
+                    "科学和逻辑",
+                    "直觉和感觉",
+                    "友情和信任",
+                    "神秘和未知"
+                ]
+            },
+            {
+                text: "在朋友中，你通常扮演什么角色？",
+                options: [
+                    "领导者，做出决策",
+                    "保护者，照顾大家",
+                    "调解者，维护和谐",
+                    "独立者，独自行动"
+                ]
+            },
+            {
+                text: "面对超自然现象，你的态度是？",
+                options: [
+                    "理性分析，寻找解释",
+                    "接受现实，勇敢面对",
+                    "好奇探索，深入了解",
+                    "保持距离，小心谨慎"
+                ]
+            },
+            {
+                text: "你如何看待友谊？",
+                options: [
+                    "友谊需要共同经历考验",
+                    "友谊是无条件的支持",
+                    "友谊是互相理解和成长",
+                    "友谊是信任和忠诚"
+                ]
+            },
+            {
+                text: "当有人需要帮助时，你会？",
+                options: [
+                    "评估情况后行动",
+                    "毫不犹豫地伸出援手",
+                    "组织大家一起帮助",
+                    "默默提供支持"
+                ]
+            },
+            {
+                text: "你更擅长什么？",
+                options: [
+                    "解决复杂问题",
+                    "领导和激励他人",
+                    "沟通和协调关系",
+                    "观察和发现细节"
+                ]
+            },
+            {
+                text: "面对困难的选择，你会？",
+                options: [
+                    "分析利弊，做出最优选择",
+                    "跟随内心，相信直觉",
+                    "听取他人意见",
+                    "等待时机，观察发展"
+                ]
+            },
+            {
+                text: "你如何看待秘密？",
+                options: [
+                    "秘密应该被揭开，真相重要",
+                    "有些秘密需要保护",
+                    "秘密会带来负担",
+                    "秘密是必要的保护"
+                ]
+            },
+            {
+                text: "在危机时刻，你的表现是？",
+                options: [
+                    "冷静思考，制定计划",
+                    "勇敢行动，冲在前面",
+                    "团结他人，共同应对",
+                    "保持警觉，寻找机会"
+                ]
+            },
+            {
+                text: "你更喜欢哪种环境？",
+                options: [
+                    "安静的地方，可以思考",
+                    "热闹的地方，充满活力",
+                    "有朋友在的地方",
+                    "神秘未知的地方"
+                ]
+            },
+            {
+                text: "面对不公正，你会？",
+                options: [
+                    "理性抗争，寻求改变",
+                    "挺身而出，维护正义",
+                    "团结他人，共同对抗",
+                    "默默忍受，等待时机"
+                ]
+            },
+            {
+                text: "你如何看待自己的能力？",
+                options: [
+                    "能力需要不断学习和提升",
+                    "每个人都有独特的价值",
+                    "能力在团队中才能发挥",
+                    "能力是用来保护的"
+                ]
+            },
+            {
+                text: "当朋友犯错时，你会？",
+                options: [
+                    "指出问题，帮助改正",
+                    "包容理解，给予支持",
+                    "一起承担，共同面对",
+                    "默默陪伴，等待好转"
+                ]
+            },
+            {
+                text: "你更看重什么？",
+                options: [
+                    "真相和知识",
+                    "勇气和正义",
+                    "友情和信任",
+                    "自由和独立"
+                ]
+            },
+            {
+                text: "面对未知的世界，你的态度是？",
+                options: [
+                    "探索发现，寻找答案",
+                    "勇敢冒险，接受挑战",
+                    "与朋友一起探索",
+                    "保持谨慎，小心前进"
+                ]
+            },
+            {
+                text: "你如何处理压力？",
+                options: [
+                    "分析问题，逐步解决",
+                    "勇敢面对，不退缩",
+                    "寻求支持，分担压力",
+                    "独自消化，保持冷静"
+                ]
+            },
+            {
+                text: "你更相信什么？",
+                options: [
+                    "科学可以解释一切",
+                    "有些事情超越科学",
+                    "人与人之间的连接",
+                    "自己的判断和直觉"
+                ]
+            },
+            {
+                text: "在团队中，你最擅长？",
+                options: [
+                    "提供策略和方案",
+                    "激励和带领团队",
+                    "协调和沟通",
+                    "执行和完成任务"
+                ]
+            },
+            {
+                text: "你如何看待牺牲？",
+                options: [
+                    "牺牲应该有意义",
+                    "为保护他人愿意牺牲",
+                    "尽量避免牺牲",
+                    "牺牲是必要的代价"
+                ]
+            },
+            {
+                text: "面对恐惧，你会？",
+                options: [
+                    "分析恐惧的来源",
+                    "直面恐惧，克服它",
+                    "与朋友一起面对",
+                    "找到方法绕过恐惧"
+                ]
+            },
+            {
+                text: "你更喜欢哪种方式解决问题？",
+                options: [
+                    "逻辑推理，寻找答案",
+                    "直接行动，快速解决",
+                    "团队合作，集思广益",
+                    "观察等待，寻找时机"
+                ]
+            },
+            {
+                text: "你如何看待与众不同？",
+                options: [
+                    "与众不同是一种优势",
+                    "每个人都是独特的",
+                    "与众不同需要勇气",
+                    "与众不同会带来孤独"
+                ]
+            },
+            {
+                text: "当计划失败时，你会？",
+                options: [
+                    "分析原因，重新制定",
+                    "不放弃，继续尝试",
+                    "寻求他人帮助",
+                    "调整方向，寻找新路"
+                ]
+            },
+            {
+                text: "你更看重哪种品质？",
+                options: [
+                    "智慧和洞察力",
+                    "勇气和决心",
+                    "善良和同理心",
+                    "独立和坚韧"
+                ]
+            },
+            {
+                text: "面对危险的任务，你会？",
+                options: [
+                    "评估风险，做好准备",
+                    "毫不犹豫地接受",
+                    "与伙伴一起完成",
+                    "独自承担，保护他人"
+                ]
+            },
+            {
+                text: "你如何看待过去？",
+                options: [
+                    "从过去学习经验",
+                    "过去塑造了现在的我",
+                    "珍惜过去的回忆",
+                    "过去已成定局，向前看"
+                ]
+            },
+            {
+                text: "当有人不理解你时，你会？",
+                options: [
+                    "解释清楚，消除误解",
+                    "坚持做自己，不在意",
+                    "给对方时间理解",
+                    "保持沉默，用行动证明"
+                ]
+            },
+            {
+                text: "你更相信什么力量能改变世界？",
+                options: [
+                    "知识和科技",
+                    "勇气和行动",
+                    "爱和友情",
+                    "个人的坚持"
+                ]
+            },
+            {
+                text: "面对强大的敌人，你会？",
+                options: [
+                    "寻找弱点，制定策略",
+                    "勇敢战斗，绝不退缩",
+                    "团结力量，共同对抗",
+                    "智取为主，避免正面冲突"
+                ]
+            },
+            {
+                text: "你如何看待规则？",
+                options: [
+                    "规则需要被理解和遵守",
+                    "规则有时需要打破",
+                    "规则是为了保护大家",
+                    "规则是灵活的"
+                ]
+            },
+            {
+                text: "当朋友遇到危险时，你的反应是？",
+                options: [
+                    "冷静分析，寻找最佳方案",
+                    "立即行动，不惜一切代价",
+                    "召集大家，共同救援",
+                    "暗中帮助，确保安全"
+                ]
+            },
+            {
+                text: "你更喜欢哪种冒险？",
+                options: [
+                    "智力冒险，解开谜题",
+                    "身体冒险，挑战极限",
+                    "与朋友一起的冒险",
+                    "独自探索的冒险"
+                ]
+            },
+            {
+                text: "你如何看待失败？",
+                options: [
+                    "失败是学习的机会",
+                    "失败让我更坚强",
+                    "失败需要朋友的支持",
+                    "失败是暂时的"
+                ]
+            },
+            {
+                text: "面对未知的力量，你会？",
+                options: [
+                    "研究它，理解它",
+                    "接受它，学会共存",
+                    "与朋友一起面对",
+                    "保持距离，小心应对"
+                ]
+            },
+            {
+                text: "你更看重什么类型的成功？",
+                options: [
+                    "发现真相，获得知识",
+                    "保护他人，伸张正义",
+                    "维护友情，共同成长",
+                    "实现自我，获得自由"
+                ]
+            },
+            {
+                text: "当团队出现分歧时，你会？",
+                options: [
+                    "分析各方观点，找出最佳方案",
+                    "做出决定，带领大家前进",
+                    "调解矛盾，寻求共识",
+                    "保持中立，等待结果"
+                ]
+            },
+            {
+                text: "你如何看待责任？",
+                options: [
+                    "责任需要理性承担",
+                    "责任是保护他人的使命",
+                    "责任是团队共同分担的",
+                    "责任是个人选择的结果"
+                ]
+            },
+            {
+                text: "面对不可能的任务，你会？",
+                options: [
+                    "寻找创新的方法",
+                    "勇敢尝试，创造可能",
+                    "依靠团队的力量",
+                    "默默努力，证明自己"
+                ]
+            },
+            {
+                text: "你更相信什么？",
+                options: [
+                    "逻辑和证据",
+                    "直觉和勇气",
+                    "友情和信任",
+                    "自己的判断"
+                ]
+            },
+            {
+                text: "当有人质疑你时，你会？",
+                options: [
+                    "用事实和逻辑证明",
+                    "用行动和结果回应",
+                    "寻求理解和支持",
+                    "坚持自己，不在意质疑"
+                ]
+            },
+            {
+                text: "你如何看待孤独？",
+                options: [
+                    "孤独是思考的时间",
+                    "孤独让我更坚强",
+                    "孤独时想念朋友",
+                    "孤独是保护自己的方式"
+                ]
+            },
+            {
+                text: "面对背叛，你会？",
+                options: [
+                    "分析原因，理性处理",
+                    "愤怒但坚持正义",
+                    "尝试理解和原谅",
+                    "保持距离，保护自己"
+                ]
+            },
+            {
+                text: "你更看重什么？",
+                options: [
+                    "真相和正义",
+                    "勇气和牺牲",
+                    "友情和忠诚",
+                    "自由和独立"
+                ]
+            },
+            {
+                text: "当世界变得陌生时，你会？",
+                options: [
+                    "研究变化，寻找原因",
+                    "勇敢适应，接受变化",
+                    "与朋友一起面对",
+                    "保持自我，不被改变"
+                ]
+            },
+            {
+                text: "你如何看待自己的独特性？",
+                options: [
+                    "独特性是我的优势",
+                    "独特性让我能帮助他人",
+                    "独特性让我与众不同",
+                    "独特性是我的秘密"
+                ]
+            },
+            {
+                text: "面对命运的安排，你会？",
+                options: [
+                    "理性分析，寻找出路",
+                    "勇敢抗争，改变命运",
+                    "接受现实，寻找意义",
+                    "默默承受，等待转机"
+                ]
+            },
+            {
+                text: "你更希望成为什么样的人？",
+                options: [
+                    "智慧的探索者",
+                    "勇敢的守护者",
+                    "温暖的伙伴",
+                    "独立的灵魂"
+                ]
+            },
+            {
+                text: "最后，你相信什么？",
+                options: [
+                    "真相终将大白",
+                    "勇气能战胜一切",
+                    "友情是最强大的力量",
+                    "每个人都有自己的路"
+                ]
+            }
+        ];
+
+        const typeMapping = ["智慧探索型", "勇敢守护型", "温暖伙伴型", "独立神秘型"];
+
+        const charactersByType = {
+            "智慧探索型": ["Eleven", "Nancy Wheeler", "Jonathan Byers", "Robin Buckley"],
+            "勇敢守护型": ["Jim Hopper", "Steve Harrington", "Billy Hargrove", "Max Mayfield"],
+            "温暖伙伴型": ["Joyce Byers", "Will Byers", "Dustin Henderson", "Lucas Sinclair"],
+            "独立神秘型": ["Mike Wheeler", "Murray Bauman", "Alexei", "Erica Sinclair"]
+        };
+
+        const personalityAnalysis = {
+            "智慧探索型": "你拥有敏锐的洞察力和强大的逻辑思维能力。面对未知，你总是充满好奇心，渴望探索真相。你相信知识和理性，善于分析问题并找到解决方案。你的独特视角让你能看到别人看不到的东西，这使你成为团队中不可或缺的智慧担当。",
+            "勇敢守护型": "你拥有无畏的勇气和强烈的正义感。面对危险，你总是冲在最前面，保护你爱的人。你的行动力极强，说到做到。虽然有时会显得冲动，但你的心始终是善良的。你是天生的守护者，愿意为了正义和友情付出一切。",
+            "温暖伙伴型": "你拥有一颗温暖善良的心，总是能在他人需要时给予支持。你重视友情和信任，是团队中的粘合剂。你善于理解他人的感受，愿意为了朋友付出。你的存在让周围的人感到安心和温暖，你是真正的朋友。",
+            "独立神秘型": "你拥有独立的思维和神秘的气质。你善于观察，喜欢独自思考。你不随波逐流，有自己的判断和坚持。虽然有时显得孤独，但你的内心深处渴望真正的连接。你的独特让你在关键时刻总能发现别人忽略的东西。"
+        };
+
+        const characterIntros = {
+            "Eleven": "Eleven是一个拥有超能力的神秘女孩，她经历了残酷的实验，但内心依然保持着善良和纯真。她拥有强大的精神力量，同时也在学习如何成为一个普通女孩。她的勇气和牺牲精神让她成为保护朋友的重要力量。",
+            "Nancy Wheeler": "Nancy是一个聪明勇敢的女孩，从最初的普通高中生成长为一名勇敢的调查记者。她追求真相，不畏危险，有着强烈的正义感。她的智慧和勇气让她在面对超自然威胁时成为重要的战斗力。",
+            "Jonathan Byers": "Jonathan是一个敏感内向的男孩，他善于观察，有着独特的视角。作为Will的哥哥，他对家人有着深厚的感情。虽然不善社交，但他的忠诚和勇气让他成为值得信赖的朋友。",
+            "Robin Buckley": "Robin是一个聪明机智的女孩，她有着敏锐的观察力和出色的语言天赋。她幽默风趣，能在紧张的情况下保持冷静。她的智慧和勇气让她成为团队中不可或缺的一员。",
+            "Jim Hopper": "Hopper是霍金斯镇的警长，一个外表粗犷但内心善良的人。他经历了失去女儿的痛苦，但依然选择保护他人。他的责任感和勇气让他成为小镇的守护者，愿意为了保护孩子们付出一切。",
+            "Steve Harrington": "Steve从一个典型的校园风云人物成长为一个真正的英雄。他勇敢、善良，愿意为了保护孩子们冒险。他的成长让他从一个自私的少年变成了一个有担当的男人，被称为'最好的保姆'。",
+            "Billy Hargrove": "Billy是一个复杂的角色，外表凶狠但内心有着不为人知的痛苦。他在最后时刻选择牺牲自己保护他人，展现出内心深处的善良。他的故事提醒我们，每个人都有改变的可能。",
+            "Max Mayfield": "Max是一个独立勇敢的女孩，她喜欢滑板，有着叛逆的性格。她经历了失去哥哥的痛苦，但依然坚强。她的勇气和独立精神让她成为团队中的重要成员。",
+            "Joyce Byers": "Joyce是一个坚强勇敢的母亲，为了救儿子她愿意相信任何可能性。她的母爱让她能够跨越现实的边界。她的坚持和勇气证明了爱的力量是无穷的。",
+            "Will Byers": "Will是一个敏感善良的男孩，他经历了逆世界的恐怖，但依然保持着纯真的心。他与逆世界的特殊联系让他成为关键人物。他的经历让他比同龄人更加成熟和深刻。",
+            "Dustin Henderson": "Dustin是一个聪明幽默的男孩，他对科学充满热情。他的乐观和幽默总能在困难时刻带来希望。他的智慧和勇气让他成为团队中的技术担当。",
+            "Lucas Sinclair": "Lucas是一个务实勇敢的男孩，他总是保持理性和警觉。他的谨慎有时会让他显得多疑，但这正是团队需要的平衡。他的忠诚和勇气让他成为值得信赖的朋友。",
+            "Mike Wheeler": "Mike是一个忠诚善良的男孩，他是团队的领导者之一。他对朋友有着深厚的感情，愿意为了他们付出一切。他的领导力和忠诚让他成为团队的核心。",
+            "Murray Bauman": "Murray是一个古怪的调查记者，他相信各种阴谋论。他的洞察力和直觉让他能够发现真相。虽然行为怪异，但他的智慧和勇气让他成为重要的盟友。",
+            "Alexei": "Alexei是一个俄罗斯科学家，他帮助主角们了解秘密实验室的计划。他的善良和幽默让他赢得了朋友们的信任。他的牺牲精神展现了人性中善良的一面。",
+            "Erica Sinclair": "Erica是Lucas的妹妹，虽然年纪小但聪明机智。她的勇敢和智慧让她在关键时刻发挥了重要作用。她的存在证明了英雄不分年龄。"
+        };
+
+        let currentQuestion = 0;
+        let answers = new Array(questions.length).fill(undefined);
+
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        function startSurvey() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('quiz-screen').style.display = 'block';
+            currentQuestion = 0;
+            answers = new Array(questions.length).fill(undefined);
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const question = questions[currentQuestion];
+            document.getElementById('question-number').textContent = `问题 ${currentQuestion + 1} / ${questions.length}`;
+            document.getElementById('question-text').textContent = question.text;
+            
+            const progressPercent = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progress-fill').style.width = progressPercent + '%';
+            
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+            
+            const letters = ['A', 'B', 'C', 'D'];
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option' + (answers[currentQuestion] === index ? ' selected' : '');
+                optionDiv.innerHTML = `
+                    <span class="option-letter">${letters[index]}</span>
+                    <span class="option-content">${option}</span>
+                `;
+                if (answers[currentQuestion] === index) {
+                    const feedback = document.createElement('span');
+                    feedback.className = 'option-feedback';
+                    feedback.textContent = '已选择';
+                    optionDiv.appendChild(feedback);
+                }
+                optionDiv.onclick = () => selectOption(index);
+                optionsContainer.appendChild(optionDiv);
+            });
+
+            updateNavigationButtons();
+            showEncouragement();
+            showFunTip();
+        }
+
+        function selectOption(index) {
+            answers[currentQuestion] = index;
+            showQuestion();
+        }
+
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            prevBtn.disabled = currentQuestion === 0;
+            
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.textContent = '查看结果';
+            } else {
+                nextBtn.textContent = '下一题';
+            }
+        }
+
+        function showEncouragement() {
+            const encouragements = [
+                "继续探索，真相就在前方...",
+                "你的选择揭示了你的内心...",
+                "逆世界在等待你的答案...",
+                "相信你的直觉...",
+                "每一步都在接近真相...",
+                "你的勇气正在被考验...",
+                "友情的力量与你同在...",
+                "神秘的面纱正在揭开..."
+            ];
+            const randomIndex = Math.floor(Math.random() * encouragements.length);
+            document.getElementById('encouragement-text').textContent = encouragements[randomIndex];
+        }
+
+        function showFunTip() {
+            const tips = [
+                "💡 提示：凭直觉选择可能更准确哦~",
+                "🎮 就像D&D游戏，每个选择都很重要！",
+                "⚡ 逆世界的能量正在流动...",
+                "🔮 你的答案正在被分析...",
+                "🔦 记得保持好奇心！"
+            ];
+            const randomIndex = Math.floor(Math.random() * tips.length);
+            document.getElementById('fun-tip').textContent = tips[randomIndex];
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (answers[currentQuestion] === undefined) {
+                alert('请选择一个选项！');
+                return;
+            }
+            
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion();
+            } else {
+                finishSurvey();
+            }
+        }
+
+        function finishSurvey() {
+            const optionCounts = [0, 0, 0, 0];
+            
+            for (let i = 0; i < questions.length; i++) {
+                if (answers[i] !== undefined) {
+                    optionCounts[answers[i]]++;
+                }
+            }
+            
+            let maxCount = -1;
+            let maxIndex = 0;
+            for (let i = 0; i < optionCounts.length; i++) {
+                if (optionCounts[i] > maxCount) {
+                    maxCount = optionCounts[i];
+                    maxIndex = i;
+                }
+            }
+            
+            const type = typeMapping[maxIndex];
+            const characters = charactersByType[type];
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            const character = characters[randomIndex];
+            
+            document.getElementById('quiz-screen').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'block';
+            document.getElementById('result-type').textContent = type;
+            document.getElementById('result-character').textContent = character;
+            
+            document.getElementById('personality-analysis').innerHTML = `
+                <div class="personality-analysis-title">性格分析</div>
+                <div class="personality-analysis-text">${personalityAnalysis[type]}</div>
+            `;
+            
+            document.getElementById('character-intro').innerHTML = `
+                <div class="character-intro-title">角色介绍 - ${character}</div>
+                <div class="character-intro-text">${characterIntros[character]}</div>
+            `;
+        }
+
+        function restartSurvey() {
+            document.getElementById('result-screen').style.display = 'none';
+            document.getElementById('start-screen').style.display = 'block';
+            currentQuestion = 0;
+            answers = new Array(questions.length).fill(undefined);
+        }
+
+        createParticles();
+    </script>
+</body>
+</html>
