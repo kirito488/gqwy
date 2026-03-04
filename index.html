@@ -81,7 +81,7 @@
             z-index: 10;
             padding: 40px;
             width: 100%;
-            max-width: 850px;
+            max-width: 1000px;
             position: relative;
         }
 
@@ -674,23 +674,26 @@
             margin-bottom: 15px;
             display: flex;
             align-items: center;
+            width: 100%;
         }
 
         .trait-label {
-            width: 140px;
+            width: 120px;
             color: #d4dce8;
             font-weight: bold;
             font-size: 1.05rem;
+            flex-shrink: 0;
         }
 
         .trait-bar-container {
             flex: 1;
-            height: 14px;
+            height: 16px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 6px;
             overflow: hidden;
             margin: 0 15px;
             box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+            min-width: 100px;
         }
 
         .trait-bar {
@@ -702,11 +705,12 @@
         }
 
         .trait-value {
-            width: 45px;
+            width: 50px;
             text-align: right;
             color: #00c8ff;
             font-weight: bold;
             font-size: 1rem;
+            flex-shrink: 0;
         }
 
         .restart-btn {
